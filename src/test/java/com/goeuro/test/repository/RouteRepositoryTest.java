@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -28,6 +27,12 @@ public class RouteRepositoryTest {
     public void findTwoExistingRoutes() {
         List<Route> routesForStations = routeRepository.findRoutesForStations(0, 4);
         Assert.assertEquals(2, routesForStations.size());
+    }
+
+    @Test
+    public void noRoutesFound() {
+        List<Route> routesForStations = routeRepository.findRoutesForStations(0, 7);
+        Assert.assertEquals(0, routesForStations.size());
     }
 
 }
