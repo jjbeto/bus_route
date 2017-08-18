@@ -6,9 +6,7 @@ import java.io.File;
 import java.nio.file.*;
 import java.util.concurrent.TimeUnit;
 
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.StandardWatchEventKinds.*;
 
 /**
  * Responsable to continuous load data from a file and check for modifications
