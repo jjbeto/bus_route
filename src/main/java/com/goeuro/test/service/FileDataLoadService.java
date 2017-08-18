@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -36,8 +37,16 @@ public class FileDataLoadService {
     private StationRepository stationRepository;
 
     @PostConstruct
-    public void init(){
-        String dataFile = Application.ARGUMENTS[0];
+    public void init() {
+        String dataFile = null;
+        if (Application.ARGUMENTS != null && Application.ARGUMENTS.length > 0) {
+            dataFile = Application.ARGUMENTS[0];
+        } else {
+            // FIXME to avoid problems with tests
+            URL resource = getClass().getClassLoader().getResource("test_data_1.txt");
+            dataFile = resource.getFile();
+        }
+
         LOG.info("Initializing DataFile [" + dataFile + "]...");
         loadData(dataFile);
         LOG.info("DataFile [" + dataFile + "] initialized!");
