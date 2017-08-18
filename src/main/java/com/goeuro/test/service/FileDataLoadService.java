@@ -1,6 +1,7 @@
 package com.goeuro.test.service;
 
 
+import com.goeuro.test.Application;
 import com.goeuro.test.dto.ResumeDto;
 import com.goeuro.test.exception.InvalidDataException;
 import com.goeuro.test.model.Route;
@@ -8,10 +9,13 @@ import com.goeuro.test.model.Station;
 import com.goeuro.test.repository.RouteRepository;
 import com.goeuro.test.repository.StationRepository;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,11 +27,21 @@ import java.util.stream.Stream;
 @Service
 public class FileDataLoadService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(FileDataLoadService.class);
+
     @Autowired
     private RouteRepository routeRepository;
 
     @Autowired
     private StationRepository stationRepository;
+
+    @PostConstruct
+    public void init(){
+        String dataFile = Application.ARGUMENTS[0];
+        LOG.info("Initializing DataFile [" + dataFile + "]...");
+        loadData(dataFile);
+        LOG.info("DataFile [" + dataFile + "] initialized!");
+    }
 
     @Transactional
     public void saveLine(Integer routeId, List<Integer> stations) {

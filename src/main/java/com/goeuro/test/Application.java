@@ -12,7 +12,7 @@ import java.net.URL;
 public class Application extends FileDatasourceAbstractService {
 
 	private static ConfigurableApplicationContext app = null;
-	private static String[] arguments = {};
+	public static String[] ARGUMENTS = {};
 
 	/**
 	 * Only starts the app if a file is informed (def file is available in case of lack of data for tests)
@@ -20,13 +20,13 @@ public class Application extends FileDatasourceAbstractService {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		arguments = args;
-		if (arguments == null || arguments.length == 0) {
+		ARGUMENTS = args;
+		if (ARGUMENTS == null || ARGUMENTS.length == 0) {
 			URL resource = Application.class.getClassLoader().getResource("test_data_1.txt");
-			loadApplication(resource.getFile());
-		} else {
-			loadApplication(arguments[0]);
+			ARGUMENTS = new String[1];
+			ARGUMENTS[0] = resource.getFile();
 		}
+		loadApplication(ARGUMENTS[0]);
 	}
 
 	private static void loadApplication(String dataFile) {
@@ -38,7 +38,7 @@ public class Application extends FileDatasourceAbstractService {
 	}
 
 	public static void runApplication() {
-		app = SpringApplication.run(Application.class, arguments);
+		app = SpringApplication.run(Application.class, ARGUMENTS);
 	}
 
 	public static void terminateApplication() {
